@@ -1,0 +1,11 @@
+{
+  "name": "loopback-mfp",
+  "version": "1.0.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chaya Berezin-Chaimson chayab@il.ibm.com",
+  "license": "ISC"
+}
