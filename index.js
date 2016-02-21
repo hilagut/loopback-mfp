@@ -11,14 +11,27 @@ module.exports = mfp;
  */
 
 //helper lists for GET functions
-var getList = ['find', 'findbyid', 'exists', 'count', 'findone'];
+var getList = ['find', 'findbyid', 'exists', 'count', 'findone', 'getchangestream']; //created get change stream
 //helper list for PUT functions
 var putList = ['upsert', 'updateattributes']; //prototype.updateAttributes()
 //helper list for DELETE function
 var deleteList = ['deletebyid'];
+//helper list for HEAD function
+var headList = ['headexists']; //made up name for it, since it does not seem to exist... 
 //helper list for POST functions
 var postList = ['create', 'updateall', 'createchangestream'];
+//helper list for basic REST endpoint functions
 var normalList = ['post', 'get', 'put', 'delete']; 
+
+//helper list for all READ operations
+var readList = ['findbyid', 'find', 'findone', 'count', 'exists']; //the question is whether to also include get? (technicaly this is covered by find)
+ 
+//helper list for all WRITE operations
+var writeList = ['create', 'updateattributes', 'upsert', 'destroybyid', 'update']; 
+
+//helper list for all EXECUTE operations
+var executeList = ['']
+
  // Helper functions to have one liner API protection
 var cont = function(req, res, next){
 	next();
@@ -77,6 +90,9 @@ function mfp(app, options) {
                 case 'count': 
                     routeContinuation = '/count';
                     break; 
+                case 'getchangestream': 
+                    routeContinuation = '/change-stream';
+                    break; 
                 
             }
             console.log('route continued in get: ' + routeContinuation);
@@ -105,9 +121,11 @@ function mfp(app, options) {
             }
         }else if(deleteList.indexOf(verb.toLowerCase()) > -1){
             actualVerb = 'delete';
-            routeContinuation = '/{id}'; //deleteById
+            routeContinuation = '/:id'; //deleteById
+        }else if(headList.indexOf(verb.toLowerCase())>-1){
+            actualVerb = 'head';
+            routeContinuation = '/:id';
         }else if (normalList.indexOf(verb.toLowerCase())>-1){
-            
             actualVerb = verb.toLowerCase(); 
             routeContinuation = '';
         }else{
