@@ -22,17 +22,14 @@ var headList = ['headexists']; //made up name for it, since it does not seem to 
 var postList = ['create', 'updateall', 'createchangestream'];
 //helper list for basic REST endpoint functions
 var normalList = ['post', 'get', 'put', 'delete']; 
-
 //helper list for all READ operations
 var readList = ['findbyid', 'find', 'findone', 'count', 'exists']; //the question is whether to also include get? (technicaly this is covered by find)
- 
 //helper list for all WRITE operations
 var writeList = ['create', 'updateattributes', 'upsert', 'destroybyid', 'update']; 
-
 //helper list for all EXECUTE operations
 var executeList = ['']
 
- // Helper functions to have one liner API protection
+// Helper functions to have one liner API protection
 var cont = function(req, res, next){
 	next();
 }; 
@@ -58,8 +55,6 @@ function mfp(app, options) {
   var authRouter = app.loopback.Router();
 
   // Setup per-route authentication (and possibly other things too)
-  
-  //get(/api/fruits/:id)
   var actualVerb = '';
   var routeContinuation = '';
   for (var route in options.routes) {
@@ -69,7 +64,6 @@ function mfp(app, options) {
         if (getList.indexOf(verb.toLowerCase())> -1){
             actualVerb = 'get'; 
             //here we want to create the right path per each of these options... 
-            //lets do a switch statement, that will save us i think
             switch(verb.toLowerCase()){
                 case 'find':
                     routeContinuation = '';
@@ -137,8 +131,6 @@ function mfp(app, options) {
       console.log("route continuation: " + routeContinuation); 
       console.log("full route: " + fullRoute);  
       console.log('verb: ' + actualVerb); 
-      //var config = options.routes[fullRoute][actualVerb]; // the issue is that we switch this. oops. but what do we do to fix this? 
-                                                          //we can't not fix this... the whole point is that we do fix it. 
       var config = options.routes[route][verb];
       console.log("actverb: " + actualVerb + " | fullroute: " + fullRoute); 
       authRouter[actualVerb](fullRoute, auth(config.authRealm), cont);
@@ -151,16 +143,5 @@ function mfp(app, options) {
   // IMPORTANT - auth middleware goes to a dedicated phase
   app.middleware('auth', authRouter);
 };
-
-
-//todo:
-//maybe we want to have a yeoman option that allows us to just choose one of these options instead of writing it
-//these are not easy names to remember. on the other hand, maybe we should change the names?? 
-//ex (insert vs upsert, update vs updateall)
-
-//now we need to make it go by crud...
-//so this works for one, right, but what if they hit
-
-//CRUD: READ WRITE DELETE EXECUTE --> or are we talking create, read, something with a u and delete
 
 
