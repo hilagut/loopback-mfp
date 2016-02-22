@@ -123,8 +123,30 @@ function mfp(app, options) {
             actualVerb = verb.toLowerCase(); 
             routeContinuation = '';
         }else{
-            actualVerb = verb.toLowerCase(); 
-            routeContinuation = '';
+            var whereslashis = 0; 
+            whereslashis = verb.indexOf('/');
+            if(verb.toLowerCase().indexOf('get') >-1 && verb.toLowerCase().indexOf('get')<3 && whereslashis > -1){
+                actualVerb = 'get';
+                routeContinuation = verb.substring(whereslashis); 
+            }else if(verb.toLowerCase().indexOf('post') >-1 && verb.toLowerCase().indexOf('post')<4 && whereslashis > -1){
+                actualVerb = 'post'; 
+                routeContinuation = verb.substring(whereslashis); 
+            }else if(verb.toLowerCase().indexOf('put') >-1 && verb.toLowerCase().indexOf('put') <3 && whereslashis > -1){
+                actualVerb = 'put';
+                routeContinuation = verb.substring(whereslashis); 
+            }else if(verb.toLowerCase().indexOf('delete') >-1 && verb.toLowerCase().indexOf('delete')<6  && whereslashis > -1){
+                actualVerb = 'delete';
+                routeContinuation = verb.substring(whereslashis); 
+            }else if(verb.toLowerCase().indexOf('head') >-1 && verb.toLowerCase().indexOf('head') <4 && whereslashis > -1){
+                actualVerb = 'head';
+                routeContinuation = verb.substring(whereslashis); 
+            }else{
+                //this should never work, since you won't know the correct verb.
+                //how do we get around this? hmmm.......
+                 actualVerb = verb.toLowerCase(); 
+                 routeContinuation = '';
+            }
+           
         }
       
       var fullRoute = route + routeContinuation; 
